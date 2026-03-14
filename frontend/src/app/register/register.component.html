@@ -1,0 +1,23 @@
+<div class="container">
+    <div class="row">
+        <h1 id="title">Register</h1>
+    </div>
+    <form #registerForm="ngForm" (ngSubmit)="onSubmit()">
+        <div class="row">
+            <label for="username">Username:</label>
+            <input [(ngModel)]="model.username" type="text" id="username" name="username" />
+        </div>
+        <div class="row">
+            <label for="password">Password:</label>
+            <input [(ngModel)]="model.password" type="text" id="password" name="password" />
+        </div>
+        <div class="row">
+            <label for="email">Email Address:</label>
+            <input [(ngModel)]="model.email_address" type="text" id="email" name="email" />
+        </div>
+        <div id="error-div" class="row"></div>
+        <div class="row">
+            <button type="submit" class="btn btn-success">Submit</button>
+        </div>
+    </form>
+</div>
