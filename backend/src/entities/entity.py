@@ -1,25 +1,19 @@
-from datetime import datetime
-from sqlalchemy import create_engine, Column, String, Integer, DateTime
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy import create_engine, Column, Integer
+import sqlalchemy.orm
+import sqlalchemy.ext.declarative
+import os
 
-db_url = 'localhost:5433'
-db_name = 'couldnt-decide-db'
-db_user = 'couldnt-decide'
-db_password = 'password'
+db_url = 'localhost:5432'
+db_name = 'cant-decide'
+db_user = 'postgres'
+db_password = 'cat'
 engine = create_engine(f'postgresql://{db_user}:{db_password}@{db_url}/{db_name}')
-Session = sessionmaker(bind=engine)
+Session = sqlalchemy.orm.sessionmaker(bind=engine)
+Base = sqlalchemy.ext.declarative.declarative_base()
 
-Base = declarative_base()
 
-
-class Entity():
+class Entity:
     id = Column(Integer, primary_key=True)
-    created_at = Column(DateTime)
-    updated_at = Column(DateTime)
-    last_updated_by = Column(String)
 
-    def __init__(self, created_by):
-        self.created_at = datetime.now()
-        self.updated_at = datetime.now()
-        self.last_updated_by = created_by
+    def __init__(self):
+        pass
