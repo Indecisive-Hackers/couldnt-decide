@@ -6,4 +6,4 @@ const home = {
     component: HomeComponent
 }
 
-export const routes: Routes = [];
+export const routes: Routes = [home];
