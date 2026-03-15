@@ -3,5 +3,17 @@
 /* Importing Bootstrap SCSS file. */
 @import 'bootstrap/scss/bootstrap';
 
-/* Importing Bootstrap SCSS file. */
-@import 'bootstrap/scss/bootstrap';
+/* View transition for site title */
+::view-transition-old(site-title) {
+  animation: none;
+  opacity: 0;
+}
+
+::view-transition-new(site-title) {
+  animation: none;
+}
+
+::view-transition-group(site-title) {
+  animation-duration: 800ms;
+  animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
