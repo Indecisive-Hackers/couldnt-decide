@@ -5,3 +5,4 @@
 *.md
 venv/
 node_modules/
+.env
