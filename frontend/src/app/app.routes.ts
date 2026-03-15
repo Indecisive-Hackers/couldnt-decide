@@ -6,9 +6,14 @@ const home = {
     component: HomeComponent
 };
 
+const setup = {
+    path: 'setup',
+    loadComponent: () => import('./debate/setup/debate-setup.component').then(m => m.DebateSetupComponent)
+};
+
 const arena = {
     path: 'arena',
     loadComponent: () => import('./debate/arena/debate-arena.component').then(m => m.DebateArenaComponent)
 };
 
-export const routes: Routes = [home, arena];
+export const routes: Routes = [home, setup, arena];
