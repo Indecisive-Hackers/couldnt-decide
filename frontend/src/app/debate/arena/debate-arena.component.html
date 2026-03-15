@@ -1,0 +1,162 @@
+<div class="arena-wrapper d-flex flex-column vh-100">
+
+  <!-- Header -->
+  <div class="arena-header px-4 py-2 d-flex justify-content-between align-items-center border-bottom">
+    <div>
+      <span class="text-muted small">Topic</span>
+      <!-- OUTPUT: debate.topic -->
+      <h6 class="mb-0 fw-semibold">Social media does more harm than good</h6>
+    </div>
+    <div class="d-flex align-items-center gap-3">
+      <!-- OUTPUT: debate.stance (FOR / AGAINST) -->
+      <span class="badge bg-primary">FOR</span>
+      <!-- OUTPUT: currentRound / maxRounds -->
+      <span class="text-muted small">Round <strong>2</strong> / 5</span>
+    </div>
+  </div>
+
+  <!-- Body: two-column -->
+  <div class="arena-body d-flex flex-grow-1 overflow-hidden">
+
+    <!-- Left: Argument Feed -->
+    <div class="feed-col d-flex flex-column border-end">
+      <!-- OUTPUT: loop over argument history (argument.author, argument.content, argument.round) -->
+      <div class="feed-scroll flex-grow-1 overflow-y-auto p-3 d-flex flex-column gap-3">
+
+        <!-- User turn #1 -->
+        <div class="d-flex justify-content-end align-items-start gap-2">
+          <div class="argument-bubble argument-user p-3 rounded-3">
+            <div class="small text-muted mb-1">You</div>
+            <!-- OUTPUT: argument.content -->
+            <p class="mb-0">Studies show that social media increases anxiety and depression in teenagers significantly.</p>
+          </div>
+          <!-- OUTPUT: argument.round -->
+          <span class="arg-badge badge rounded-pill bg-primary">#1</span>
+        </div>
+
+        <!-- AI turn #2 -->
+        <div class="d-flex justify-content-start align-items-start gap-2">
+          <!-- OUTPUT: argument.round -->
+          <span class="arg-badge badge rounded-pill bg-secondary">#2</span>
+          <div class="argument-bubble argument-ai p-3 rounded-3">
+            <div class="small text-muted mb-1">AI</div>
+            <!-- OUTPUT: LLM response — counter-argument text -->
+            <p class="mb-0">While some studies suggest a correlation, the causal link between social media and mental health issues is still debated among researchers.</p>
+          </div>
+        </div>
+
+        <!-- User turn #3 -->
+        <div class="d-flex justify-content-end align-items-start gap-2">
+          <div class="argument-bubble argument-user p-3 rounded-3">
+            <div class="small text-muted mb-1">You</div>
+            <!-- OUTPUT: argument.content -->
+            <p class="mb-0">However, the sheer volume of misinformation spread daily on these platforms is undeniable.</p>
+          </div>
+          <!-- OUTPUT: argument.round -->
+          <span class="arg-badge badge rounded-pill bg-primary">#3</span>
+        </div>
+
+      </div>
+
+      <!-- Input -->
+      <div class="input-area p-3 border-top">
+        <div class="d-flex gap-2">
+          <!-- INPUT: user's argument text → sent to LLM as next user argument -->
+          <textarea
+            class="form-control"
+            rows="2"
+            placeholder="Type your argument..."
+          ></textarea>
+          <!-- INPUT: triggers submitArgument(userInput) -->
+          <button class="btn btn-primary px-4">Send</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right: Score + Fact-check -->
+    <div class="side-col d-flex flex-column p-3 gap-3">
+
+      <!-- Score Panel -->
+      <div class="card">
+        <div class="card-body">
+          <h6 class="card-title mb-3">Score</h6>
+          <div class="d-flex flex-column gap-2">
+            <div>
+              <div class="d-flex justify-content-between small mb-1">
+                <!-- OUTPUT: score.user -->
+                <span>You</span><span class="fw-bold">62</span>
+              </div>
+              <div class="progress" style="height: 8px;">
+                <!-- OUTPUT: score.user as percentage width -->
+                <div class="progress-bar bg-primary" style="width: 62%"></div>
+              </div>
+            </div>
+            <div>
+              <div class="d-flex justify-content-between small mb-1">
+                <!-- OUTPUT: score.ai -->
+                <span>AI</span><span class="fw-bold">38</span>
+              </div>
+              <div class="progress" style="height: 8px;">
+                <!-- OUTPUT: score.ai as percentage width -->
+                <div class="progress-bar bg-secondary" style="width: 38%"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Fact-check Panel -->
+      <div class="card flex-grow-1 overflow-hidden d-flex flex-column">
+        <div class="card-body d-flex flex-column overflow-hidden">
+          <h6 class="card-title mb-3">Fact-Checks</h6>
+          <!-- OUTPUT: loop over factChecks (factCheck.round, factCheck.claim, factCheck.verdict, factCheck.icon) -->
+          <div class="factcheck-list overflow-y-auto d-flex flex-column gap-1">
+
+            <!-- Fact-check item #1 (collapsed) -->
+            <div class="factcheck-item rounded-2 p-2">
+              <div class="factcheck-summary d-flex align-items-center gap-2" data-bs-toggle="collapse" data-bs-target="#fc1" role="button">
+                <!-- OUTPUT: factCheck.round — matches badge on argument bubble -->
+                <span class="badge rounded-pill bg-primary flex-shrink-0">#1</span>
+                <!-- OUTPUT: factCheck.claim (truncated) — LLM-extracted key claim from the argument -->
+                <span class="factcheck-claim text-truncate small">"Studies show that social media increases anxiety..."</span>
+                <!-- OUTPUT: factCheck.icon — emoji based on verdict (✅ true, ⚠️ partial, ❌ false) -->
+                <span class="ms-auto flex-shrink-0">⚠️</span>
+              </div>
+              <div class="collapse" id="fc1">
+                <!-- OUTPUT: factCheck.verdict — LLM full fact-check explanation -->
+                <p class="small text-muted mt-2 mb-0">Partially true — some studies show correlation, but methodology varies widely across research.</p>
+              </div>
+            </div>
+
+            <!-- Fact-check item #2 (collapsed) -->
+            <div class="factcheck-item rounded-2 p-2">
+              <div class="factcheck-summary d-flex align-items-center gap-2" data-bs-toggle="collapse" data-bs-target="#fc2" role="button">
+                <span class="badge rounded-pill bg-secondary flex-shrink-0">#2</span>
+                <span class="factcheck-claim text-truncate small">"Causal link is still debated among researchers."</span>
+                <span class="ms-auto flex-shrink-0">✅</span>
+              </div>
+              <div class="collapse" id="fc2">
+                <p class="small text-muted mt-2 mb-0">Accurate — the scientific community continues to debate causality vs. correlation.</p>
+              </div>
+            </div>
+
+            <!-- Fact-check item #3 (expanded by default) -->
+            <div class="factcheck-item rounded-2 p-2">
+              <div class="factcheck-summary d-flex align-items-center gap-2" data-bs-toggle="collapse" data-bs-target="#fc3" role="button">
+                <span class="badge rounded-pill bg-primary flex-shrink-0">#3</span>
+                <span class="factcheck-claim text-truncate small">"Sheer volume of misinformation is undeniable."</span>
+                <span class="ms-auto flex-shrink-0">✅</span>
+              </div>
+              <div class="collapse show" id="fc3">
+                <p class="small text-muted mt-2 mb-0">Mostly true — multiple studies confirm high misinformation rates on major platforms.</p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
