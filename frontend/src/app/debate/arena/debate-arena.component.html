@@ -1,74 +1,64 @@
 <div class="arena-wrapper d-flex flex-column vh-100">
 
   <!-- Header -->
-  <div class="arena-header px-4 py-2 d-flex justify-content-between align-items-center border-bottom">
+  <div class="arena-header px-5 py-4 d-flex justify-content-between align-items-center">
     <div>
-      <span class="text-muted small">Topic</span>
-      <!-- OUTPUT: debate.topic -->
-      <h6 class="mb-0 fw-semibold">{{ topic() }}</h6>
+      <span class="header-label">Topic</span>
+      <h4 class="header-topic mb-0">{{ topic() }}</h4>
     </div>
-    <div class="d-flex align-items-center gap-3">
-        <span class="badge bg-primary">
-            @if (turn == 0) {FOR} @else {AGAINST}
-        </span>
-      <!-- OUTPUT: currentRound / maxRounds -->
-      <span class="text-muted small">Turn <strong>{{ Math.floor(chats.length/2) + 1 }}</strong> / {{ max_rounds() }}</span>
+    <div class="d-flex align-items-center gap-4">
+      <span class="turn-badge">
+        @if (turn == 0) { FOR } @else { AGAINST }
+      </span>
+      <span class="turn-counter">Turn <strong>{{ Math.floor(chats.length/2) + 1 }}</strong> / {{ max_rounds() }}</span>
     </div>
   </div>
 
-  <!-- Body: two-column -->
+  <!-- Body: two-column 50/50 -->
   <div class="arena-body d-flex flex-grow-1 overflow-hidden">
 
     <!-- Left: Argument Feed -->
-    <div class="feed-col d-flex flex-column border-end">
-      <!-- OUTPUT: loop over argument history (argument.author, argument.content, argument.round) -->
-      <div id="chat_box" class="feed-scroll flex-grow-1 overflow-y-auto p-3 d-flex flex-column gap-3">
+    <div class="feed-col d-flex flex-column">
+      <div id="chat_box" class="feed-scroll flex-grow-1 overflow-y-auto p-4 d-flex flex-column gap-3">
 
         @for (i of chats_index_arr; track i) {
-            @if (i%2 == 1) {
-                <div class="d-flex justify-content-end align-items-start gap-2">
-                  <div class="argument-bubble argument-user p-3 rounded-3">
-                    <div class="small text-muted mb-1">Player 2</div>
-                    <!-- OUTPUT: argument.content -->
-                    <p class="mb-0">{{ chats[i] }}</p>
-                  </div>
-                  <!-- OUTPUT: argument.round -->
-                  <span class="arg-badge badge rounded-pill bg-primary">#{{i}}</span>
-                </div>
-            } @else {
-                <div class="d-flex justify-content-start align-items-start gap-2">
-                  <!-- OUTPUT: argument.round -->
-                  <span class="arg-badge badge rounded-pill bg-secondary">#{{i}}</span>
-                  <div class="argument-bubble argument-ai p-3 rounded-3">
-                    <div class="small text-muted mb-1">Player 1</div>
-                    <!-- OUTPUT: LLM response — counter-argument text -->
-                    <p class="mb-0">{{ chats[i] }}</p>
-                  </div>
-                </div>
-            }
+          @if (i%2 == 1) {
+            <div class="d-flex justify-content-end align-items-start gap-2">
+              <div class="argument-bubble argument-p2 p-3 rounded-3">
+                <div class="bubble-label mb-1">Player 2</div>
+                <p class="mb-0">{{ chats[i] }}</p>
+              </div>
+              <span class="arg-badge rounded-pill">#{{i}}</span>
+            </div>
+          } @else {
+            <div class="d-flex justify-content-start align-items-start gap-2">
+              <span class="arg-badge arg-badge--alt rounded-pill">#{{i}}</span>
+              <div class="argument-bubble argument-p1 p-3 rounded-3">
+                <div class="bubble-label mb-1">Player 1</div>
+                <p class="mb-0">{{ chats[i] }}</p>
+              </div>
+            </div>
+          }
         }
 
       </div>
 
       <!-- Input -->
-      <div class="input-area p-3 border-top">
+      <div class="input-area p-4">
         @if (inputError()) {
           <div class="text-danger small mb-2">{{ inputError() }}</div>
         }
         <div class="d-flex gap-2">
-          <!-- INPUT: user's argument text → sent to LLM as next user argument -->
           <textarea
-            class="form-control"
+            class="arena-input form-control"
             rows="2"
             placeholder="Type or dictate your argument..."
             [ngModel]="userInput()"
             (ngModelChange)="userInput.set($event)"
           ></textarea>
-          <!-- INPUT: toggles speech dictation on/off -->
           <button
-            class="btn"
-            [class.btn-outline-secondary]="!isListening()"
-            [class.btn-danger]="isListening()"
+            class="btn arena-icon-btn"
+            [class.listening]="isListening()"
             [title]="isListening() ? 'Stop dictation' : 'Start dictation'"
             (click)="toggleDictation()"
           >
@@ -77,69 +67,55 @@
               <path d="M10 8a2 2 0 1 1-4 0V3a2 2 0 1 1 4 0z"/>
             </svg>
           </button>
-          <!-- INPUT: triggers submitArgument(userInput) -->
-          <button class="btn btn-primary px-4" (click)="submitAnswer()">Send</button>
+          <button class="btn arena-send-btn px-4" (click)="submitAnswer()">Send</button>
         </div>
       </div>
     </div>
 
     <!-- Right: Score + Fact-check -->
-    <div class="side-col d-flex flex-column p-3 gap-3">
+    <div class="side-col d-flex flex-column p-4 gap-4">
 
       <!-- Score Panel -->
-      <div class="card">
-        <div class="card-body">
-          <h6 class="card-title mb-3">Score</h6>
-          <div class="d-flex flex-column gap-2">
-            <div>
-              <div class="d-flex justify-content-between small mb-1">
-                <!-- OUTPUT: score.user -->
-                <span>Player 1</span><span class="fw-bold">{{ score0 }}</span>
-              </div>
-              <div class="progress" style="height: 8px;">
-                <!-- OUTPUT: score.user as percentage width -->
-                <div class="progress-bar bg-primary" [style.width.%]="(score1 + score0) == 0 ? 0 : (score0 / (score0 + score1)) * 100"></div>
-              </div>
+      <div class="arena-card p-4">
+        <h6 class="panel-title mb-3">Score</h6>
+        <div class="d-flex flex-column gap-3">
+          <div>
+            <div class="d-flex justify-content-between mb-2">
+              <span class="score-label">Player 1</span>
+              <span class="score-value">{{ score0 }}</span>
             </div>
-            <div>
-              <div class="d-flex justify-content-between small mb-1">
-                <!-- OUTPUT: score.ai -->
-                <span>Player 2</span><span class="fw-bold">{{ score1 }}</span>
-              </div>
-              <div class="progress" style="height: 8px;">
-                <!-- OUTPUT: score.ai as percentage width -->
-                <div class="progress-bar bg-secondary" [style.width.%]="(score1 + score0) == 0 ? 0 : (score1 / (score0 + score1)) * 100"></div>
-              </div>
+            <div class="score-bar">
+              <div class="score-bar__fill score-bar__fill--p1" [style.width.%]="(score1 + score0) == 0 ? 0 : (score0 / (score0 + score1)) * 100"></div>
+            </div>
+          </div>
+          <div>
+            <div class="d-flex justify-content-between mb-2">
+              <span class="score-label">Player 2</span>
+              <span class="score-value">{{ score1 }}</span>
+            </div>
+            <div class="score-bar">
+              <div class="score-bar__fill score-bar__fill--p2" [style.width.%]="(score1 + score0) == 0 ? 0 : (score1 / (score0 + score1)) * 100"></div>
             </div>
           </div>
         </div>
       </div>
 
       <!-- Fact-check Panel -->
-      <div class="card flex-grow-1 overflow-hidden d-flex flex-column">
-        <div class="card-body d-flex flex-column overflow-hidden">
-          <h6 class="card-title mb-3">Fact-Checks</h6>
-          <!-- OUTPUT: loop over factChecks (factCheck.round, factCheck.claim, factCheck.verdict, factCheck.icon) -->
-          <div class="factcheck-list overflow-y-auto d-flex flex-column gap-1">
-            @for (j of facts_index_arr; track j) {
-                <!-- Fact-check item #1 (collapsed) -->
-                <div class="factcheck-item rounded-2 p-2">
-                  <div class="factcheck-summary d-flex align-items-center gap-2" data-bs-toggle="collapse" data-bs-target="#fc1" role="button">
-                    <!-- OUTPUT: factCheck.round — matches badge on argument bubble -->
-                    <span class="badge rounded-pill bg-primary flex-shrink-0">#{{ j }}</span>
-                    <!-- OUTPUT: factCheck.claim (truncated) — LLM-extracted key claim from the argument -->
-                    <span class="factcheck-claim text-truncate small elipses">{{ facts[j]["info"] }}</span>
-                    <!-- OUTPUT: factCheck.icon — emoji based on verdict (✅ true, ⚠️ partial, ❌ false) -->
-                    <span class="ms-auto flex-shrink-0">{{ facts[j]["facts"] == "true" ? "✅" : (facts[j]["facts"] == "false" ? "❌" : "⚠️")}}</span>
-                  </div>
-                  <div class="collapse" id="fc1">
-                    <!-- OUTPUT: factCheck.verdict — LLM full fact-check explanation -->
-                    <p class="small text-muted mt-2 mb-0">{{ facts[j]["info"] }}</p>
-                  </div>
-                </div>
-            }
-
-          </div>
+      <div class="arena-card flex-grow-1 overflow-hidden d-flex flex-column p-4">
+        <h6 class="panel-title mb-3">Fact-Checks</h6>
+        <div class="factcheck-list overflow-y-auto d-flex flex-column gap-2">
+          @for (j of facts_index_arr; track j) {
+            <div class="factcheck-item rounded-2 p-3">
+              <div class="factcheck-summary d-flex align-items-center gap-2" data-bs-toggle="collapse" data-bs-target="#fc1" role="button">
+                <span class="arg-badge arg-badge--alt rounded-pill flex-shrink-0">#{{ j }}</span>
+                <span class="factcheck-claim text-truncate small">{{ facts[j]["info"] }}</span>
+                <span class="ms-auto flex-shrink-0">{{ facts[j]["facts"] == "true" ? "✅" : (facts[j]["facts"] == "false" ? "❌" : "⚠️")}}</span>
+              </div>
+              <div class="collapse" id="fc1">
+                <p class="small mt-2 mb-0 factcheck-detail">{{ facts[j]["info"] }}</p>
+              </div>
+            </div>
+          }
         </div>
       </div>
 
