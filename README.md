@@ -30,6 +30,11 @@ Scripts are provided to start and stop all services:
 
 (pending)
 ```bash
+docker run --name cant-decide \
+    -p 5432:5432 \
+    -e POSTGRES_DB=cant-decide \
+    -e POSTGRES_PASSWORD=cat \
+    -d postgres > database.txt
 ```
 
 ### Backend
