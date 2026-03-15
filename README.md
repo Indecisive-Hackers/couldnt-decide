@@ -1,6 +1,6 @@
-# Couldn't Decide
+# Resurecting the Truth
 
-A web app to help you make decisions.
+A web app to monitor debates and uses an AI (Gemini) to fact-check.
 
 ## Stack
 
