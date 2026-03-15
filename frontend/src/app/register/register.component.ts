@@ -4,6 +4,7 @@ import {IUser, NewUser} from "../entities/user/user.model";
 import {UserApiService} from "../entities/user/user-api.service";
 import {finalize, Observable} from "rxjs";
 import {HttpResponse} from "@angular/common/http";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-register',
@@ -16,6 +17,8 @@ import {HttpResponse} from "@angular/common/http";
 })
 export class RegisterComponent{
 
+  private router = inject(Router);
+
   model : NewUser = {id: null, username: "", password: "", email_address: ""}
   submitted = false;
   userAPI = inject(UserApiService);
@@ -27,7 +30,7 @@ export class RegisterComponent{
   private subscribeToSaveResponse(result: Observable<HttpResponse<IUser>>) : void {
     result.pipe(
     finalize(() => this.submitted = true)).subscribe({
-      next: () => history.back(),
+      next: () => this.router.navigate(['../login']),
       error: err => {
         document.getElementById("error-div")!.innerHTML = err.error.split("\n").reverse()[1].toString();
         document.getElementById("error-div")!.style.visibility = "visible";

@@ -15,6 +15,8 @@ import {HttpResponse} from "@angular/common/http";
 import {IModeration} from "../../entities/fact-checking/fact-checking-result.model";
 import {TurnsUpModalComponent} from "../../turns-up-modal/turns-up-modal.component";
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import {IUser} from "../../entities/user/user.model";
+import {DebateService} from "../../services/debate/debate.service";
 
 @Component({
   selector: 'app-debate-arena',
@@ -23,7 +25,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
   templateUrl: './debate-arena.component.html',
   styleUrl: './debate-arena.component.scss'
 })
-export class DebateArenaComponent implements OnDestroy {
+export class DebateArenaComponent implements OnDestroy, OnInit {
   userInput = signal('');
   isListening = signal(false);
   topic = input<string>("");
@@ -38,12 +40,12 @@ export class DebateArenaComponent implements OnDestroy {
   facts_index_arr : number[] = [];
   score0 = 0;
   score1 = 0;
-
+  other_user : IUser;
   fact_checking = inject(FactCheckingApiService);
 
   private recognition = this.initRecognition();
 
-  constructor(public modalService: NgbModal) {
+  constructor(public modalService: NgbModal, public debate : DebateService) {
   }
 
   private initRecognition(): SpeechRecognition | null {
@@ -63,6 +65,15 @@ export class DebateArenaComponent implements OnDestroy {
     r.onerror = (e) => { console.error('SpeechRecognition error:', e.error); this.isListening.set(false); };
     r.onend = () => this.isListening.set(false);
     return r;
+  }
+
+  ngOnInit() {
+    this.debate.getMessage().subscribe(message =>{
+      this.debate.messages.push(message);
+    });
+    this.debate.debatingWith.subscribe(user => {
+      this.other_user = user
+    })
   }
 
   toggleDictation(): void {
@@ -111,6 +122,12 @@ export class DebateArenaComponent implements OnDestroy {
     this.inputError.set(null);
     this.chats.push(this.userInput());
     this.chats_index_arr = Array.from({ length: this.chats.length }, (_, i) => i);
+    let message = {
+      message: this.userInput(),
+      to: this.other_user.id,
+      date: new Date()
+    }
+    this.chat
     this.subscribeToSaveResponse(this.fact_checking.checkFacts(this.userInput(), this.turn));
     this.userInput.set("");
     this.turn = (this.turn + 1) % 2;

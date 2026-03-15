@@ -4,15 +4,17 @@ from src.entities import user, entity
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity, get_jwt
 import datetime
 from src.llmApiCall import prompt
+from flask_socketio import SocketIO
 
 app = flask.Flask(__name__)
-
+socketio = SocketIO(app, cors_allowed_origins="*")
 CORS(app, supports_credentials=True, origins=['http://localhost:4200'])
 app.config['SECRET_KEY'] = 'aSecretKey'
 interface = JWTManager(app)
 
 entity.Base.metadata.create_all(entity.engine)
 
+users = {}
 revoked_tokens = []
 
 
@@ -21,6 +23,28 @@ def check_if_token_revoked(jwt_header, jwt_payload):
     jti = jwt_payload['jti']
     return jti in revoked_tokens
 
+# Websockets
+
+@socketio.on('sign_in')
+def user_sign_in(username):
+    users[flask.request.sid] = username['name']
+    socketio.emit('current_users', users)
+    print(f"New user: {username}\nThe users are: {users}")
+
+@socketio.on('disconnect')
+def on_disconnect():
+    users.pop(flask.request.sid,'No user found')
+    socketio.emit('current_users', users)
+    print(f"User disconnected.\nThe users are: {users}")
+
+@socketio.on('message')
+def messaging(message):
+    print(f'Message: {str(message)}, Sender: {flask.request.sid}, Recipient: {message["to"]}')
+    message['from'] = flask.request.sid
+    # socketio.emit('message', message, room=flask.request.sid)
+    socketio.emit('message', message, room=message['to'])
+
+# Rest APIs
 
 @app.route("/api/login", methods=['POST'])
 def login():
