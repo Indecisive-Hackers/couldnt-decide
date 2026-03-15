@@ -116,6 +116,17 @@ export class DebateArenaComponent implements OnDestroy {
     this.turn = (this.turn + 1) % 2;
     if (Math.floor(this.chats.length/2) + 1 > this.max_rounds()) {
       const modalRef = this.modalService.open(TurnsUpModalComponent);
+      if (this.score0 > this.score1) {
+        modalRef.componentInstance.winner = 1
+      }
+      else {
+        if (this.score0 < this.score1) {
+          modalRef.componentInstance.winner = 2
+        }
+        else {
+          modalRef.componentInstance.winner = 0
+        }
+      }
       modalRef.result.then(() => {
         this.exit.emit(true);
       }, (error) => {
