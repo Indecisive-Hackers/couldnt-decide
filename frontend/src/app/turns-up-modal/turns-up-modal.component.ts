@@ -1,4 +1,4 @@
-import {Component, ElementRef, ViewChild} from '@angular/core';
+import { Component } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
@@ -11,6 +11,10 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 export class TurnsUpModalComponent {
 
   constructor(public activeModal : NgbActiveModal) {
+  }
+
+  finished() {
+    this.activeModal.close();
   }
 
 }
