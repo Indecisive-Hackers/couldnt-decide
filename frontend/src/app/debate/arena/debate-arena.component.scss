@@ -1,8 +1,8 @@
 $orange: #c9702a;
 $orange-light: #e8923f;
-$bg: #0d0d0d;
-$surface: #1a1a1a;
-$border: #2e2e2e;
+$bg: #0f0d0b;
+$surface: #1c1916;
+$border: #2e2a26;
 $text: #e0e0e0;
 $muted: #888;
 
@@ -88,8 +88,8 @@ $muted: #888;
   }
 
   &.argument-p2 {
-    background-color: #1f1408;
-    border: 1px solid rgba($orange, 0.4);
+    background-color: #1e1510;
+    border: 1px solid rgba($orange, 0.35);
     color: $text;
   }
 }
@@ -209,7 +209,7 @@ $muted: #888;
 // ── Fact-check ───────────────────────────────────────────────────────────────
 
 .factcheck-item {
-  background-color: #111;
+  background-color: #140f0b;
   border: 1px solid $border;
   cursor: pointer;
   transition: border-color 0.15s;

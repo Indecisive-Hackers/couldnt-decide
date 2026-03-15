@@ -3,7 +3,7 @@
 .homepage {
   width: 100dvw;
   height: 100dvh;
-  background-color: black;
+  background-color: #0f0d0b;
   color: white;
 }
 
@@ -11,7 +11,7 @@
   color: #bcbcbc !important;
 }
 
-#site_title{
+#site_title {
   font-family: "Amatic SC", sans-serif;
   font-weight: 700;
   font-style: normal;
@@ -61,51 +61,4 @@ small {
     background-color: #b86320;
     border-color: #b86320;
   }
-}
-
-.text-muted {
-  color: #bcbcbc !important;
-}
-
-#site_title{
-  font-family: "Amatic SC", sans-serif;
-  font-weight: 700;
-  font-style: normal;
-  -webkit-animation: glow 1s ease-in-out infinite alternate;
-  -moz-animation: glow 1s ease-in-out infinite alternate;
-  animation: glow 1s ease-in-out infinite alternate;
-}
-
-@-webkit-keyframes glow {
-  from {
-    text-shadow: 0 0 10px #000000, 0 0 20px #000000, 0 0 30px #c6c6c6, 0 0 40px #c6c6c6, 0 0 50px #c6c6c6, 0 0 60px #c6c6c6, 0 0 70px #c6c6c6;
-  }
-  to {
-    text-shadow: 0 0 20px #000000, 0 0 30px #ffffff, 0 0 40px #ffffff, 0 0 50px #ffffff, 0 0 60px #ffffff, 0 0 70px #ffffff, 0 0 80px #ffffff;
-  }
-}
-
-#gemini {
-  max-width: 6dvw;
-
-}
-
-#footer {
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-}
-
-div {
-  align-items: center;
-  justify-content: center;
-}
-
-.row2 {
-  width: 100%;
-}
-
-small {
-  text-align: center;
-  font-size: x-small;
 }

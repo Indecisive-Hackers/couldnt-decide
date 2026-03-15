@@ -3,7 +3,7 @@
 .setup-page {
   width: 100dvw;
   height: 100dvh;
-  background-color: black;
+  background-color: #0f0d0b;
   color: white;
 }
 
@@ -19,7 +19,6 @@
   font-size: 5rem;
 }
 
-
 .setup-label {
   display: block;
   font-size: 1.1rem;
@@ -29,44 +28,43 @@
 }
 
 .setup-input {
-  background-color: #1a1a1a;
-  border: 1px solid #444;
+  background-color: #1c1916;
+  border: 1px solid #3a3530;
   color: white;
   font-size: 1.2rem;
   padding: 0.9rem 1.2rem;
   border-radius: 8px;
 
   &::placeholder {
-    color: #666;
+    color: #5a5550;
   }
 
   &:focus {
-    background-color: #1a1a1a;
-    border-color: #888;
+    background-color: #1c1916;
+    border-color: #6a6460;
     color: white;
-    box-shadow: 0 0 0 0.2rem rgba(255, 255, 255, 0.1);
+    box-shadow: 0 0 0 0.2rem rgba(201, 112, 42, 0.15);
   }
 }
 
 .rounds-btn {
   width: 72px;
   padding: 0.7rem 0;
-  background-color: #2a2a2a;
-  border: 1px solid #444;
+  background-color: #1c1916;
+  border: 1px solid #3a3530;
   border-radius: 8px;
-  color: #aaaaaa;
+  color: #999490;
   font-size: 1.2rem;
   font-weight: 600;
   cursor: pointer;
-  transition: border-color 0.2s, background-color 0.2s, color 0.2s;
+  transition: border-color 0.2s, color 0.2s;
 
   &:hover {
-    border-color: #666;
+    border-color: #5a5550;
     color: #e0e0e0;
   }
 
   &--active {
-    background-color: #2a2a2a;
     border-color: #e8923f;
     color: #e8923f;
   }
@@ -82,7 +80,7 @@
 
   &:hover:not(:disabled) {
     background-color: #b86320;
-    border-color: #b8632o;
+    border-color: #b86320;
   }
 
   &:disabled {
