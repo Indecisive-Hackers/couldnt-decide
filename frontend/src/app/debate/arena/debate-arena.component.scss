@@ -1,0 +1,59 @@
+.arena-wrapper {
+  background-color: #f8f9fa;
+}
+
+.arena-header {
+  background-color: #fff;
+}
+
+.feed-col {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.side-col {
+  width: 320px;
+  flex-shrink: 0;
+  overflow-y: auto;
+  background-color: #fff;
+}
+
+.argument-bubble {
+  max-width: 75%;
+
+  &.argument-user {
+    background-color: #0d6efd;
+    color: #fff;
+
+    .text-muted {
+      color: rgba(255, 255, 255, 0.7) !important;
+    }
+  }
+
+  &.argument-ai {
+    background-color: #fff;
+    border: 1px solid #dee2e6;
+
+    .fact-check-inline {
+      color: #6c757d;
+    }
+  }
+}
+
+.input-area {
+  background-color: #fff;
+}
+
+.factcheck-item {
+  cursor: pointer;
+  background-color: #f8f9fa;
+
+  &:hover {
+    background-color: #e9ecef;
+  }
+
+  .factcheck-claim {
+    flex: 1;
+    min-width: 0;
+  }
+}
