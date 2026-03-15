@@ -52,6 +52,9 @@
 
       <!-- Input -->
       <div class="input-area p-3 border-top">
+        @if (inputError()) {
+          <div class="text-danger small mb-2">{{ inputError() }}</div>
+        }
         <div class="d-flex gap-2">
           <!-- INPUT: user's argument text → sent to LLM as next user argument -->
           <textarea
