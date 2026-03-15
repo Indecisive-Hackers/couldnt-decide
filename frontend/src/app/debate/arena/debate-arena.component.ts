@@ -1,4 +1,4 @@
-import { Component, NgZone, OnDestroy } from '@angular/core';
+import { Component, signal, OnDestroy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 @Component({
@@ -9,59 +9,40 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './debate-arena.component.scss'
 })
 export class DebateArenaComponent implements OnDestroy {
-  userInput = '';
-  isListening = false;
+  userInput = signal('');
+  isListening = signal(false);
 
-  private recognition: SpeechRecognition | null = null;
+  private recognition = this.initRecognition();
 
-  constructor(private zone: NgZone) {
-    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-    if (!SpeechRecognition) {
+  private initRecognition(): SpeechRecognition | null {
+    const SR = window.SpeechRecognition ?? window.webkitSpeechRecognition;
+    if (!SR) {
       console.warn('SpeechRecognition is not supported in this browser.');
-      return;
+      return null;
     }
 
-    this.recognition = new SpeechRecognition();
-    this.recognition.continuous = true;
-    this.recognition.interimResults = true;
-    this.recognition.lang = 'en-US';
-
-    this.recognition.onresult = (event: SpeechRecognitionEvent) => {
-      let transcript = '';
-      for (let i = 0; i < event.results.length; i++) {
-        transcript += event.results[i][0].transcript;
-      }
-      this.zone.run(() => { this.userInput = transcript; });
-    };
-
-    this.recognition.onerror = (event: SpeechRecognitionErrorEvent) => {
-      this.zone.run(() => {
-        console.error('SpeechRecognition error:', event.error, event.message);
-        this.isListening = false;
-      });
-    };
-
-    this.recognition.onend = () => {
-      this.zone.run(() => { this.isListening = false; });
-    };
+    const r = new SR();
+    r.continuous = true;
+    r.interimResults = true;
+    r.lang = 'en-US';
+    r.onresult = (e) => this.userInput.set(
+      Array.from(e.results).map(r => r[0].transcript).join('')
+    );
+    r.onerror = (e) => { console.error('SpeechRecognition error:', e.error); this.isListening.set(false); };
+    r.onend = () => this.isListening.set(false);
+    return r;
   }
 
   toggleDictation(): void {
-    if (!this.recognition) {
-      console.warn('SpeechRecognition not available.');
-      return;
-    }
-    if (this.isListening) {
+    if (!this.recognition) return;
+    if (this.isListening()) {
       this.recognition.stop();
-      this.isListening = false;
     } else {
-      this.userInput = '';
+      this.userInput.set('');
       this.recognition.start();
-      this.isListening = true;
+      this.isListening.set(true);
     }
   }
 
-  ngOnDestroy(): void {
-    this.recognition?.stop();
-  }
+  ngOnDestroy(): void { this.recognition?.stop(); }
 }
