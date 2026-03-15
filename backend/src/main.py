@@ -85,5 +85,4 @@ def check_facts():
         flask.abort(400, description="Speaker or/and text is missing.")
     facts = prompt(f"Please only give exactly \"true\" or \"false\". Is this statement the truth?: \"{json_o['text']}\"")
     info = prompt(f"Briefly explain why this statement is or isn't true: \"{json_o['text']}\"")
-    print(facts, info)
     return flask.jsonify({"facts": facts, "info": info, "speaker": json_o['speaker']}), 200

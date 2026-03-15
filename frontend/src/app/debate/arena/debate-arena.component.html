@@ -21,40 +21,31 @@
     <!-- Left: Argument Feed -->
     <div class="feed-col d-flex flex-column border-end">
       <!-- OUTPUT: loop over argument history (argument.author, argument.content, argument.round) -->
-      <div class="feed-scroll flex-grow-1 overflow-y-auto p-3 d-flex flex-column gap-3">
+      <div id="chat_box" class="feed-scroll flex-grow-1 overflow-y-auto p-3 d-flex flex-column gap-3">
 
-        <!-- User turn #1 -->
-        <div class="d-flex justify-content-end align-items-start gap-2">
-          <div class="argument-bubble argument-user p-3 rounded-3">
-            <div class="small text-muted mb-1">You</div>
-            <!-- OUTPUT: argument.content -->
-            <p class="mb-0">Studies show that social media increases anxiety and depression in teenagers significantly.</p>
-          </div>
-          <!-- OUTPUT: argument.round -->
-          <span class="arg-badge badge rounded-pill bg-primary">#1</span>
-        </div>
-
-        <!-- AI turn #2 -->
-        <div class="d-flex justify-content-start align-items-start gap-2">
-          <!-- OUTPUT: argument.round -->
-          <span class="arg-badge badge rounded-pill bg-secondary">#2</span>
-          <div class="argument-bubble argument-ai p-3 rounded-3">
-            <div class="small text-muted mb-1">AI</div>
-            <!-- OUTPUT: LLM response — counter-argument text -->
-            <p class="mb-0">While some studies suggest a correlation, the causal link between social media and mental health issues is still debated among researchers.</p>
-          </div>
-        </div>
-
-        <!-- User turn #3 -->
-        <div class="d-flex justify-content-end align-items-start gap-2">
-          <div class="argument-bubble argument-user p-3 rounded-3">
-            <div class="small text-muted mb-1">You</div>
-            <!-- OUTPUT: argument.content -->
-            <p class="mb-0">However, the sheer volume of misinformation spread daily on these platforms is undeniable.</p>
-          </div>
-          <!-- OUTPUT: argument.round -->
-          <span class="arg-badge badge rounded-pill bg-primary">#3</span>
-        </div>
+        @for (i of chats_index_arr; track i) {
+            @if (i%2 == 1) {
+                <div class="d-flex justify-content-end align-items-start gap-2">
+                  <div class="argument-bubble argument-user p-3 rounded-3">
+                    <div class="small text-muted mb-1">Player 2</div>
+                    <!-- OUTPUT: argument.content -->
+                    <p class="mb-0">{{ chats[i] }}</p>
+                  </div>
+                  <!-- OUTPUT: argument.round -->
+                  <span class="arg-badge badge rounded-pill bg-primary">#1</span>
+                </div>
+            } @else {
+                <div class="d-flex justify-content-start align-items-start gap-2">
+                  <!-- OUTPUT: argument.round -->
+                  <span class="arg-badge badge rounded-pill bg-secondary">#2</span>
+                  <div class="argument-bubble argument-ai p-3 rounded-3">
+                    <div class="small text-muted mb-1">Player 1</div>
+                    <!-- OUTPUT: LLM response — counter-argument text -->
+                    <p class="mb-0">{{ chats[i] }}</p>
+                  </div>
+                </div>
+            }
+        }
 
       </div>
 
@@ -99,21 +90,21 @@
             <div>
               <div class="d-flex justify-content-between small mb-1">
                 <!-- OUTPUT: score.user -->
-                <span>You</span><span class="fw-bold">62</span>
+                <span>Player 1</span><span class="fw-bold">{{ score0 }}</span>
               </div>
               <div class="progress" style="height: 8px;">
                 <!-- OUTPUT: score.user as percentage width -->
-                <div class="progress-bar bg-primary" style="width: 62%"></div>
+                <div class="progress-bar bg-primary" [style.width.%]="(score1 + score0) == 0 ? 0 : (score0 / (score0 + score1)) * 100"></div>
               </div>
             </div>
             <div>
               <div class="d-flex justify-content-between small mb-1">
                 <!-- OUTPUT: score.ai -->
-                <span>AI</span><span class="fw-bold">38</span>
+                <span>Player 2</span><span class="fw-bold">{{ score1 }}</span>
               </div>
               <div class="progress" style="height: 8px;">
                 <!-- OUTPUT: score.ai as percentage width -->
-                <div class="progress-bar bg-secondary" style="width: 38%"></div>
+                <div class="progress-bar bg-secondary" [style.width.%]="(score1 + score0) == 0 ? 0 : (score1 / (score0 + score1)) * 100"></div>
               </div>
             </div>
           </div>
@@ -127,45 +118,23 @@
           <!-- OUTPUT: loop over factChecks (factCheck.round, factCheck.claim, factCheck.verdict, factCheck.icon) -->
           <div class="factcheck-list overflow-y-auto d-flex flex-column gap-1">
 
-            <!-- Fact-check item #1 (collapsed) -->
-            <div class="factcheck-item rounded-2 p-2">
-              <div class="factcheck-summary d-flex align-items-center gap-2" data-bs-toggle="collapse" data-bs-target="#fc1" role="button">
-                <!-- OUTPUT: factCheck.round — matches badge on argument bubble -->
-                <span class="badge rounded-pill bg-primary flex-shrink-0">#1</span>
-                <!-- OUTPUT: factCheck.claim (truncated) — LLM-extracted key claim from the argument -->
-                <span class="factcheck-claim text-truncate small">"Studies show that social media increases anxiety..."</span>
-                <!-- OUTPUT: factCheck.icon — emoji based on verdict (✅ true, ⚠️ partial, ❌ false) -->
-                <span class="ms-auto flex-shrink-0">⚠️</span>
-              </div>
-              <div class="collapse" id="fc1">
-                <!-- OUTPUT: factCheck.verdict — LLM full fact-check explanation -->
-                <p class="small text-muted mt-2 mb-0">Partially true — some studies show correlation, but methodology varies widely across research.</p>
-              </div>
-            </div>
-
-            <!-- Fact-check item #2 (collapsed) -->
-            <div class="factcheck-item rounded-2 p-2">
-              <div class="factcheck-summary d-flex align-items-center gap-2" data-bs-toggle="collapse" data-bs-target="#fc2" role="button">
-                <span class="badge rounded-pill bg-secondary flex-shrink-0">#2</span>
-                <span class="factcheck-claim text-truncate small">"Causal link is still debated among researchers."</span>
-                <span class="ms-auto flex-shrink-0">✅</span>
-              </div>
-              <div class="collapse" id="fc2">
-                <p class="small text-muted mt-2 mb-0">Accurate — the scientific community continues to debate causality vs. correlation.</p>
-              </div>
-            </div>
-
-            <!-- Fact-check item #3 (expanded by default) -->
-            <div class="factcheck-item rounded-2 p-2">
-              <div class="factcheck-summary d-flex align-items-center gap-2" data-bs-toggle="collapse" data-bs-target="#fc3" role="button">
-                <span class="badge rounded-pill bg-primary flex-shrink-0">#3</span>
-                <span class="factcheck-claim text-truncate small">"Sheer volume of misinformation is undeniable."</span>
-                <span class="ms-auto flex-shrink-0">✅</span>
-              </div>
-              <div class="collapse show" id="fc3">
-                <p class="small text-muted mt-2 mb-0">Mostly true — multiple studies confirm high misinformation rates on major platforms.</p>
-              </div>
-            </div>
+            @for (j of facts_index_arr; track j) {
+                <!-- Fact-check item #1 (collapsed) -->
+                <div class="factcheck-item rounded-2 p-2">
+                  <div class="factcheck-summary d-flex align-items-center gap-2" data-bs-toggle="collapse" data-bs-target="#fc1" role="button">
+                    <!-- OUTPUT: factCheck.round — matches badge on argument bubble -->
+                    <span class="badge rounded-pill bg-primary flex-shrink-0">#{{ j }}</span>
+                    <!-- OUTPUT: factCheck.claim (truncated) — LLM-extracted key claim from the argument -->
+                    <span class="factcheck-claim text-truncate small elipses">{{ facts[j]["info"]}}</span>
+                    <!-- OUTPUT: factCheck.icon — emoji based on verdict (✅ true, ⚠️ partial, ❌ false) -->
+                    <span class="ms-auto flex-shrink-0">{{ facts[j]["facts"] == "true" ? "✅" : (facts[j]["facts"] == "false" ? "❌" : "⚠️")}}</span>
+                  </div>
+                  <div class="collapse" id="fc1">
+                    <!-- OUTPUT: factCheck.verdict — LLM full fact-check explanation -->
+                    <p class="small text-muted mt-2 mb-0">{{ facts[j]["info"]}}</p>
+                  </div>
+                </div>
+            }
 
           </div>
         </div>
