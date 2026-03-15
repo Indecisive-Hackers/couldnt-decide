@@ -1,5 +1,6 @@
-import { Component, signal, OnDestroy } from '@angular/core';
+import {Component, signal, OnDestroy, OnInit} from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import {toObservable} from "@angular/core/rxjs-interop";
 
 @Component({
   selector: 'app-debate-arena',
@@ -11,6 +12,7 @@ import { FormsModule } from '@angular/forms';
 export class DebateArenaComponent implements OnDestroy {
   userInput = signal('');
   isListening = signal(false);
+  
 
   private recognition = this.initRecognition();
 
@@ -45,4 +47,8 @@ export class DebateArenaComponent implements OnDestroy {
   }
 
   ngOnDestroy(): void { this.recognition?.stop(); }
+
+  protected submitAnswer() {
+
+  }
 }

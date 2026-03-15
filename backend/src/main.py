@@ -3,6 +3,7 @@ from flask_cors import CORS
 from src.entities import user, entity
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity, get_jwt
 import datetime
+from src.llmApiCall import prompt
 
 app = flask.Flask(__name__)
 
@@ -76,3 +77,13 @@ def register_user():
     send_new_user = user.UserSchema().dump(user.SecureUser(new_user))
     session.close()
     return (flask.jsonify(send_new_user), 201)
+
+@app.route('/api/check-facts', methods=['POST'])
+def check_facts():
+    json_o = flask.request.get_json()
+    if json_o['text'] == "" or json_o['speaker'] == "":
+        flask.abort(400, description="Speaker or/and text is missing.")
+    facts = prompt(f"Please only give exactly \"true\" or \"false\". Is this statement the truth?: \"{json_o['text']}\"")
+    info = prompt(f"Briefly explain why this statement is or isn't true: \"{json_o['text']}\"")
+    print(facts, info)
+    return flask.jsonify({"facts": facts, "info": info, "speaker": json_o['speaker']}), 200
