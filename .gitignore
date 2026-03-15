@@ -3,4 +3,5 @@
 *.txt
 !requirements.txt
 *.md
-venv
+venv/
+node_modules/
