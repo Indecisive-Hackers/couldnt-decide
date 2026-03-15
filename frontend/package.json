@@ -30,6 +30,7 @@
     "@angular/cli": "^18.2.14",
     "@angular/compiler-cli": "^18.2.0",
     "@angular/localize": "^18.2.0",
+    "@types/dom-speech-recognition": "^0.0.7",
     "@types/jasmine": "~5.1.0",
     "jasmine-core": "~5.2.0",
     "karma": "~6.4.0",
