@@ -6,7 +6,6 @@ A web app to monitor debates and uses an AI (Gemini) to fact-check.
 
 - **Frontend**: Angular 18 — `http://localhost:4200`
 - **Backend**: Python/Flask — `http://localhost:5000`
-- **Database**: PostgreSQL (via Docker) — `localhost:5432`
 
 ## Prerequisites
 
@@ -25,17 +24,6 @@ Scripts are provided to start and stop all services:
 ```
 
 ## Manual Setup
-
-### Database
-
-(pending)
-```bash
-docker run --name cant-decide \
-    -p 5432:5432 \
-    -e POSTGRES_DB=cant-decide \
-    -e POSTGRES_PASSWORD=cat \
-    -d postgres > database.txt
-```
 
 ### Backend
 
