@@ -1,4 +1,4 @@
-import {Component, signal, OnDestroy, OnInit, inject} from '@angular/core';
+import {Component, signal, OnDestroy, OnInit, inject, input} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {FactCheckingApiService} from "../../entities/fact-checking/fact-checking-api.service";
 import {finalize, Observable} from "rxjs";
@@ -15,6 +15,8 @@ import {IModeration} from "../../entities/fact-checking/fact-checking-result.mod
 export class DebateArenaComponent implements OnDestroy {
   userInput = signal('');
   isListening = signal(false);
+  topic = input<string>("");
+  max_rounds = input<number>(1);
 
   chats : string[] = [];
   chats_index_arr : number[] = []
@@ -90,4 +92,5 @@ export class DebateArenaComponent implements OnDestroy {
   }
 
   protected readonly Array = Array;
+  protected readonly Math = Math;
 }

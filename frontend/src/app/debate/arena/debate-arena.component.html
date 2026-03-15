@@ -5,13 +5,14 @@
     <div>
       <span class="text-muted small">Topic</span>
       <!-- OUTPUT: debate.topic -->
-      <h6 class="mb-0 fw-semibold">Social media does more harm than good</h6>
+      <h6 class="mb-0 fw-semibold">{{ topic() }}</h6>
     </div>
     <div class="d-flex align-items-center gap-3">
-      <!-- OUTPUT: debate.stance (FOR / AGAINST) -->
-      <span class="badge bg-primary">FOR</span>
+        <span class="badge bg-primary">
+            @if (turn == 0) {FOR} @else {AGAINST}
+        </span>
       <!-- OUTPUT: currentRound / maxRounds -->
-      <span class="text-muted small">Round <strong>2</strong> / 5</span>
+      <span class="text-muted small">Turn <strong>{{ Math.floor(chats.length/2) + 1 }}</strong> / {{ max_rounds() }}</span>
     </div>
   </div>
 
@@ -32,12 +33,12 @@
                     <p class="mb-0">{{ chats[i] }}</p>
                   </div>
                   <!-- OUTPUT: argument.round -->
-                  <span class="arg-badge badge rounded-pill bg-primary">#1</span>
+                  <span class="arg-badge badge rounded-pill bg-primary">#{{i}}</span>
                 </div>
             } @else {
                 <div class="d-flex justify-content-start align-items-start gap-2">
                   <!-- OUTPUT: argument.round -->
-                  <span class="arg-badge badge rounded-pill bg-secondary">#2</span>
+                  <span class="arg-badge badge rounded-pill bg-secondary">#{{i}}</span>
                   <div class="argument-bubble argument-ai p-3 rounded-3">
                     <div class="small text-muted mb-1">Player 1</div>
                     <!-- OUTPUT: LLM response — counter-argument text -->
