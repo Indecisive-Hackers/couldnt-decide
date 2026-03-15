@@ -2,6 +2,6 @@
     <h1 class="modal-title">Finish</h1>
 </div>
 <div class="modal-body">
-    <p>You have used up all of your turns.</p>
+    <p>You have used up all of your turns. @if (winner !== 0) {The winner was player {{ winner }}.} @else {It was a draw.}</p>
     <button class="btn btn-primary" (click)="finished()">New Game</button>
 </div>
