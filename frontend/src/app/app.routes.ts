@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { HomeComponent } from './home/home.component';
+import {SelectionComponent} from "./selection/selection.component";
 
 const home = {
     path: '',
@@ -11,4 +12,9 @@ const arena = {
     loadComponent: () => import('./debate/setup/debate-setup.component').then(m => m.DebateSetupComponent)
 };
 
-export const routes: Routes = [home, arena];
+const selection = {
+    path: 'selection',
+    component: SelectionComponent
+}
+
+export const routes: Routes = [home, arena, selection];
