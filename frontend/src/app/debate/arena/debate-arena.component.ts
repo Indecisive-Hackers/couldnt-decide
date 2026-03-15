@@ -31,22 +31,13 @@ export class DebateArenaComponent implements OnDestroy {
 
   @Output() exit = new EventEmitter<boolean>(false);
 
-  chats : string[] = [
-    'Studies consistently show that social media increases anxiety and depression in teenagers, with usage correlated to lower self-esteem.',
-    'While correlation exists, causation is unproven. Teenagers with pre-existing anxiety may simply gravitate toward social media more.',
-    'The sheer volume of misinformation spread daily on these platforms is undeniable and has real-world consequences.',
-    'Traditional media spreads misinformation too. Social media also enables rapid fact-checking and correction by the public.',
-  ];
-  chats_index_arr : number[] = [0, 1, 2, 3];
+  chats : string[] = [];
+  chats_index_arr : number[] = [];
   turn = 0;
-  facts : IModeration[] = [
-    { facts: 'true', info: 'Multiple peer-reviewed studies confirm correlation between heavy social media use and increased anxiety in adolescents.', speaker: 0 },
-    { facts: 'partial', info: 'The causal relationship is debated — some studies suggest bidirectional effects rather than one-way causation.', speaker: 1 },
-    { facts: 'true', info: 'Research by MIT and Stanford documents high misinformation spread rates, particularly on Twitter and Facebook.', speaker: 0 },
-  ];
-  facts_index_arr : number[] = [0, 1, 2];
-  score0 = 2;
-  score1 = 1;
+  facts : IModeration[] = [];
+  facts_index_arr : number[] = [];
+  score0 = 0;
+  score1 = 0;
 
   fact_checking = inject(FactCheckingApiService);
 
