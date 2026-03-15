@@ -118,7 +118,6 @@
           <h6 class="card-title mb-3">Fact-Checks</h6>
           <!-- OUTPUT: loop over factChecks (factCheck.round, factCheck.claim, factCheck.verdict, factCheck.icon) -->
           <div class="factcheck-list overflow-y-auto d-flex flex-column gap-1">
-
             @for (j of facts_index_arr; track j) {
                 <!-- Fact-check item #1 (collapsed) -->
                 <div class="factcheck-item rounded-2 p-2">
@@ -126,13 +125,13 @@
                     <!-- OUTPUT: factCheck.round — matches badge on argument bubble -->
                     <span class="badge rounded-pill bg-primary flex-shrink-0">#{{ j }}</span>
                     <!-- OUTPUT: factCheck.claim (truncated) — LLM-extracted key claim from the argument -->
-                    <span class="factcheck-claim text-truncate small elipses">{{ facts[j]["info"]}}</span>
+                    <span class="factcheck-claim text-truncate small elipses">{{ facts[j]["info"] }}</span>
                     <!-- OUTPUT: factCheck.icon — emoji based on verdict (✅ true, ⚠️ partial, ❌ false) -->
                     <span class="ms-auto flex-shrink-0">{{ facts[j]["facts"] == "true" ? "✅" : (facts[j]["facts"] == "false" ? "❌" : "⚠️")}}</span>
                   </div>
                   <div class="collapse" id="fc1">
                     <!-- OUTPUT: factCheck.verdict — LLM full fact-check explanation -->
-                    <p class="small text-muted mt-2 mb-0">{{ facts[j]["info"]}}</p>
+                    <p class="small text-muted mt-2 mb-0">{{ facts[j]["info"] }}</p>
                   </div>
                 </div>
             }
