@@ -34,23 +34,17 @@ $muted: #888;
   color: white;
 }
 
-.turn-badge {
-  font-size: 0.75rem;
+.round-counter {
+  font-size: 1.6rem;
   font-weight: 700;
-  letter-spacing: 0.1em;
-  padding: 0.35rem 0.9rem;
-  border-radius: 999px;
-  background-color: $orange;
   color: white;
+  line-height: 1;
 }
 
-.turn-counter {
-  font-size: 0.9rem;
-  color: $muted;
-
-  strong {
-    color: $text;
-  }
+.round-total {
+  font-size: 1.2rem;
+  font-weight: 400;
+  color: #666;
 }
 
 // ── Layout ───────────────────────────────────────────────────────────────────
@@ -82,14 +76,14 @@ $muted: #888;
   font-size: 0.95rem;
 
   &.argument-p1 {
-    background-color: $surface;
-    border: 1px solid $border;
+    background-color: #272320;
+    border: 1px solid #4a4540;
     color: $text;
   }
 
   &.argument-p2 {
-    background-color: #1e1510;
-    border: 1px solid rgba($orange, 0.35);
+    background-color: #261b10;
+    border: 1px solid rgba($orange, 0.65);
     color: $text;
   }
 }
@@ -109,9 +103,9 @@ $muted: #888;
   margin-top: 0.3rem;
 
   &--alt {
-    background-color: $surface;
-    border: 1px solid $border;
-    color: $muted;
+    background-color: #3a3530;
+    border: 1px solid #5a5550;
+    color: #c0bcb8;
   }
 }
 
@@ -128,8 +122,12 @@ $muted: #888;
   color: $text;
   resize: none;
   border-radius: 8px;
+  padding: 0.85rem 1.1rem;
+  font-size: 1rem;
 
-  &::placeholder { color: #555; }
+  &::placeholder {
+    color: #4a4540;
+  }
 
   &:focus {
     background-color: $surface;
@@ -139,11 +137,22 @@ $muted: #888;
   }
 }
 
+.arena-icon-btn,
+.arena-send-btn {
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+}
+
 .arena-icon-btn {
   background-color: $surface;
   border: 1px solid $border;
   color: $muted;
-  border-radius: 8px;
 
   &:hover { border-color: #555; color: $text; }
 
@@ -158,7 +167,6 @@ $muted: #888;
   background-color: $orange;
   border-color: $orange;
   color: white;
-  border-radius: 8px;
 
   &:hover { background-color: #b86320; border-color: #b86320; }
 }
@@ -201,20 +209,20 @@ $muted: #888;
     border-radius: 999px;
     transition: width 0.4s ease;
 
-    &--p1 { background-color: $orange; }
-    &--p2 { background-color: #555; }
+    &--p1 { background-color: #5a5550; }
+    &--p2 { background-color: $orange; }
   }
 }
 
 // ── Fact-check ───────────────────────────────────────────────────────────────
 
 .factcheck-item {
-  background-color: #140f0b;
-  border: 1px solid $border;
+  background-color: #201c18;
+  border: 1px solid #4a4540;
   cursor: pointer;
-  transition: border-color 0.15s;
+  transition: border-color 0.15s, background-color 0.15s;
 
-  &:hover { border-color: #444; }
+  &:hover { border-color: #6a6460; background-color: #2a2520; }
 
   .factcheck-claim {
     flex: 1;

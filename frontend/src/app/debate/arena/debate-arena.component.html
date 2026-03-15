@@ -6,11 +6,9 @@
       <span class="header-label">Topic</span>
       <h4 class="header-topic mb-0">{{ topic() }}</h4>
     </div>
-    <div class="d-flex align-items-center gap-4">
-      <span class="turn-badge">
-        @if (turn == 0) { FOR } @else { AGAINST }
-      </span>
-      <span class="turn-counter">Turn <strong>{{ Math.floor(chats.length/2) + 1 }}</strong> / {{ max_rounds() }}</span>
+    <div class="d-flex flex-column align-items-end">
+      <span class="header-label">Round</span>
+      <span class="round-counter"><strong>{{ Math.floor(chats.length/2) + 1 }}</strong><span class="round-total"> / {{ max_rounds() }}</span></span>
     </div>
   </div>
 
@@ -28,11 +26,11 @@
                 <div class="bubble-label mb-1">Player 2</div>
                 <p class="mb-0">{{ chats[i] }}</p>
               </div>
-              <span class="arg-badge rounded-pill">#{{i}}</span>
+              <span class="arg-badge rounded-pill">#{{i+1}}</span>
             </div>
           } @else {
             <div class="d-flex justify-content-start align-items-start gap-2">
-              <span class="arg-badge arg-badge--alt rounded-pill">#{{i}}</span>
+              <span class="arg-badge arg-badge--alt rounded-pill">#{{i+1}}</span>
               <div class="argument-bubble argument-p1 p-3 rounded-3">
                 <div class="bubble-label mb-1">Player 1</div>
                 <p class="mb-0">{{ chats[i] }}</p>
@@ -51,7 +49,7 @@
         <div class="d-flex gap-2">
           <textarea
             class="arena-input form-control"
-            rows="2"
+            rows="1"
             placeholder="Type or dictate your argument..."
             [ngModel]="userInput()"
             (ngModelChange)="userInput.set($event)"
@@ -67,7 +65,11 @@
               <path d="M10 8a2 2 0 1 1-4 0V3a2 2 0 1 1 4 0z"/>
             </svg>
           </button>
-          <button class="btn arena-send-btn px-4" (click)="submitAnswer()">Send</button>
+          <button class="btn arena-send-btn" (click)="submitAnswer()" title="Send">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+              <path d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11z"/>
+            </svg>
+          </button>
         </div>
       </div>
     </div>
@@ -106,12 +108,13 @@
         <div class="factcheck-list overflow-y-auto d-flex flex-column gap-2">
           @for (j of facts_index_arr; track j) {
             <div class="factcheck-item rounded-2 p-3">
-              <div class="factcheck-summary d-flex align-items-center gap-2" data-bs-toggle="collapse" data-bs-target="#fc1" role="button">
-                <span class="arg-badge arg-badge--alt rounded-pill flex-shrink-0">#{{ j }}</span>
+              <div class="factcheck-summary d-flex align-items-center gap-2" data-bs-toggle="collapse" [attr.data-bs-target]="'#fc-' + j" role="button">
+                <span class="arg-badge rounded-pill flex-shrink-0"
+                  [class.arg-badge--alt]="facts[j].speaker === 0">#{{ j+1 }}</span>
                 <span class="factcheck-claim text-truncate small">{{ facts[j]["info"] }}</span>
                 <span class="ms-auto flex-shrink-0">{{ facts[j]["facts"] == "true" ? "✅" : (facts[j]["facts"] == "false" ? "❌" : "⚠️")}}</span>
               </div>
-              <div class="collapse" id="fc1">
+              <div class="collapse" [id]="'fc-' + j">
                 <p class="small mt-2 mb-0 factcheck-detail">{{ facts[j]["info"] }}</p>
               </div>
             </div>
