@@ -78,7 +78,37 @@ export class DebateArenaComponent implements OnDestroy {
 
   ngOnDestroy(): void { this.recognition?.stop(); }
 
+  private static readonly INJECTION_PATTERNS = [
+    /ignore\s+(previous|all|above)\s+(instructions?|prompts?)/i,
+    /disregard\s+(previous|all|above)/i,
+    /forget\s+everything/i,
+    /you\s+are\s+now/i,
+    /act\s+as\s+/i,
+    /pretend\s+(to\s+be|you\s+are)/i,
+    /system\s+prompt/i,
+    /jailbreak/i,
+  ];
+
+  private static readonly MAX_LENGTH = 500;
+
+  inputError = signal<string | null>(null);
+
+  private validateInput(text: string): string | null {
+    const trimmed = text.trim();
+    if (!trimmed) return 'Argument cannot be empty.';
+    if (trimmed.length > DebateArenaComponent.MAX_LENGTH)
+      return `Argument must be ${DebateArenaComponent.MAX_LENGTH} characters or fewer.`;
+    if (this.chats.length > 0 && trimmed === this.chats[this.chats.length - 1].trim())
+      return 'Argument cannot be identical to your last submission.';
+    if (DebateArenaComponent.INJECTION_PATTERNS.some(p => p.test(trimmed)))
+      return 'Argument contains disallowed content.';
+    return null;
+  }
+
   protected submitAnswer() {
+    const error = this.validateInput(this.userInput());
+    if (error) { this.inputError.set(error); return; }
+    this.inputError.set(null);
     this.chats.push(this.userInput());
     this.chats_index_arr = Array.from({ length: this.chats.length }, (_, i) => i);
     this.subscribeToSaveResponse(this.fact_checking.checkFacts(this.userInput(), this.turn));
