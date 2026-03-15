@@ -3,6 +3,8 @@ from flask_cors import CORS
 from src.entities import user, entity
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity, get_jwt
 import datetime
+import asyncio
+from speechToText import stt
 
 app = flask.Flask(__name__)
 
@@ -76,3 +78,9 @@ def register_user():
     send_new_user = user.UserSchema().dump(user.SecureUser(new_user))
     session.close()
     return (flask.jsonify(send_new_user), 201)
+
+@app.route('/api/stt', methods=['POST'])
+def stt_api():
+    audio_data = flask.request.files['audio_data'].read()
+    text_json = asyncio.run(stt(audio_data))
+    return text_json, 200
