@@ -13,12 +13,16 @@ import {DebateArenaComponent} from "../arena/debate-arena.component";
 })
 export class DebateSetupComponent {
   topic = '';
-  rounds = 1;
+  rounds = 5;
   setup = false;
 
   constructor(private router: Router) {}
 
   start(): void {
     this.setup = true;
+  }
+
+  unsetup($event : boolean) {
+    this.setup = false;
   }
 }
