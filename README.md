@@ -1,6 +1,6 @@
 # Couldn't Decide
 
-A web app to help you make decisions.
+An AI-powered debate referee. Users submit claims from both sides of a debate and the app uses AI to fact-check each claim for accuracy, helping surface misinformation in real time.
 
 ## Stack
 
