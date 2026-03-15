@@ -1,7 +1,113 @@
-.setup-wrapper {
-  background-color: #f8f9fa;
+@import url('https://fonts.googleapis.com/css2?family=Amatic+SC:wght@400;700&display=swap');
+
+.setup-page {
+  width: 100dvw;
+  height: 100dvh;
+  background-color: #0f0d0b;
+  color: white;
 }
 
-.setup-card {
-  max-width: 480px;
+.setup-container {
+  width: 100%;
+  max-width: 680px;
+  padding: 0 1.5rem;
+}
+
+.setup-site-title {
+  font-family: "Amatic SC", sans-serif;
+  font-weight: 700;
+  font-size: 5rem;
+}
+
+.setup-label {
+  display: block;
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 0.6rem;
+  color: #e0e0e0;
+}
+
+.setup-input {
+  background-color: #1c1916;
+  border: 1px solid #3a3530;
+  color: white;
+  font-size: 1.2rem;
+  padding: 0.9rem 1.2rem;
+  border-radius: 8px;
+
+  &::placeholder {
+    color: #5a5550;
+  }
+
+  &:focus {
+    background-color: #1c1916;
+    border-color: #6a6460;
+    color: white;
+    box-shadow: 0 0 0 0.2rem rgba(201, 112, 42, 0.15);
+  }
+}
+
+.rounds-btn {
+  width: 72px;
+  padding: 0.7rem 0;
+  background-color: #1c1916;
+  border: 1px solid #3a3530;
+  border-radius: 8px;
+  color: #999490;
+  font-size: 1.2rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s;
+
+  &:hover {
+    border-color: #5a5550;
+    color: #e0e0e0;
+  }
+
+  &--active {
+    border-color: #e8923f;
+    color: #e8923f;
+  }
+}
+
+.setup-btn {
+  font-size: 1.2rem;
+  padding: 0.9rem 3rem;
+  border-radius: 8px;
+  background-color: #c9702a;
+  border-color: #c9702a;
+  color: white;
+
+  &:hover:not(:disabled) {
+    background-color: #b86320;
+    border-color: #b86320;
+  }
+
+  &:disabled {
+    background-color: #6b3d18;
+    border-color: #6b3d18;
+    opacity: 0.6;
+  }
+}
+
+// Staggered field animations — start after view transition (~800ms)
+.field {
+  opacity: 0;
+  animation: field-in 0.5s ease forwards;
+  margin-bottom: 2rem;
+}
+
+.field-1 { animation-delay: 750ms; }
+.field-2 { animation-delay: 950ms; }
+.field-3 { animation-delay: 1100ms; margin-top: 3.5rem; }
+
+@keyframes field-in {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

@@ -3,7 +3,7 @@
 .homepage {
   width: 100dvw;
   height: 100dvh;
-  background-color: black;
+  background-color: #0f0d0b;
   color: white;
 }
 
@@ -11,7 +11,7 @@
   color: #bcbcbc !important;
 }
 
-#site_title{
+#site_title {
   font-family: "Amatic SC", sans-serif;
   font-weight: 700;
   font-style: normal;
@@ -31,7 +31,6 @@
 
 #gemini {
   max-width: 6dvw;
-
 }
 
 #footer {
@@ -52,4 +51,14 @@ div {
 small {
   text-align: center;
   font-size: x-small;
+}
+
+.btn-primary {
+  background-color: #c9702a;
+  border-color: #c9702a;
+
+  &:hover {
+    background-color: #b86320;
+    border-color: #b86320;
+  }
 }
