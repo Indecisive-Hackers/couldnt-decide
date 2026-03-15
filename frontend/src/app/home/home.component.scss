@@ -1,4 +1,30 @@
+@import url('https://fonts.googleapis.com/css2?family=Amatic+SC:wght@400;700&display=swap');
+
 .homepage {
-  width: 100%;
-  height: 100%;
+  width: 100dvw;
+  height: 100dvh;
+  background-color: black;
+  color: white;
+}
+
+.text-muted {
+  color: #bcbcbc !important;
+}
+
+#site_title{
+  font-family: "Amatic SC", sans-serif;
+  font-weight: 700;
+  font-style: normal;
+  -webkit-animation: glow 1s ease-in-out infinite alternate;
+  -moz-animation: glow 1s ease-in-out infinite alternate;
+  animation: glow 1s ease-in-out infinite alternate;
+}
+
+@-webkit-keyframes glow {
+  from {
+    text-shadow: 0 0 10px #000000, 0 0 20px #000000, 0 0 30px #c6c6c6, 0 0 40px #c6c6c6, 0 0 50px #c6c6c6, 0 0 60px #c6c6c6, 0 0 70px #c6c6c6;
+  }
+  to {
+    text-shadow: 0 0 20px #000000, 0 0 30px #ffffff, 0 0 40px #ffffff, 0 0 50px #ffffff, 0 0 60px #ffffff, 0 0 70px #ffffff, 0 0 80px #ffffff;
+  }
 }
