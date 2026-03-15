@@ -2,6 +2,12 @@
   background-color: #f8f9fa;
 }
 
+.ellipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .arena-header {
   background-color: #fff;
 }

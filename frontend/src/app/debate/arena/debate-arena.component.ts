@@ -1,5 +1,9 @@
-import { Component, signal, OnDestroy } from '@angular/core';
+import {Component, signal, OnDestroy, OnInit, inject, input} from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import {FactCheckingApiService} from "../../entities/fact-checking/fact-checking-api.service";
+import {finalize, Observable} from "rxjs";
+import {HttpResponse} from "@angular/common/http";
+import {IModeration} from "../../entities/fact-checking/fact-checking-result.model";
 
 @Component({
   selector: 'app-debate-arena',
@@ -11,6 +15,18 @@ import { FormsModule } from '@angular/forms';
 export class DebateArenaComponent implements OnDestroy {
   userInput = signal('');
   isListening = signal(false);
+  topic = input<string>("");
+  max_rounds = input<number>(1);
+
+  chats : string[] = [];
+  chats_index_arr : number[] = []
+  turn = 0;
+  facts : IModeration[] = []
+  facts_index_arr : number[] = []
+  score0 = 0
+  score1 = 0
+
+  fact_checking = inject(FactCheckingApiService);
 
   private recognition = this.initRecognition();
 
@@ -45,4 +61,36 @@ export class DebateArenaComponent implements OnDestroy {
   }
 
   ngOnDestroy(): void { this.recognition?.stop(); }
+
+  protected submitAnswer() {
+    this.chats.push(this.userInput());
+    this.chats_index_arr = Array.from({ length: this.chats.length }, (_, i) => i);
+    this.subscribeToSaveResponse(this.fact_checking.checkFacts(this.userInput(), this.turn));
+    this.turn = (this.turn + 1) % 2;
+  }
+
+  private subscribeToSaveResponse(result: Observable<HttpResponse<any>>) : void {
+    result.pipe(
+    finalize(() => {})).subscribe({
+      next: res => {
+        let fact = res.body;
+        fact["facts"] = fact["facts"].lower();
+        this.facts.push();
+        this.facts_index_arr = Array.from({ length: this.facts.length }, (_, i) => i);
+        if (res.body["facts"].lower() == "true")
+          if (this.turn % 2 == 0) {
+            this.score1 += 1;
+          }
+          else {
+            this.score0 += 1;
+          }
+      },
+      error: err => {
+        alert("Error");
+      },
+    })
+  }
+
+  protected readonly Array = Array;
+  protected readonly Math = Math;
 }

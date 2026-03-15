@@ -1,48 +1,58 @@
-<div class="setup-wrapper d-flex flex-column align-items-center justify-content-center vh-100 px-3">
+@if (!setup) {
+   <div class="setup-wrapper d-flex flex-column align-items-center justify-content-center vh-100 px-3">
 
-  <div class="setup-card card shadow-sm w-100">
-    <div class="card-body p-4">
+      <div class="setup-card card shadow-sm w-100">
+        <div class="card-body p-4">
 
-      <h4 class="mb-1 fw-bold">Start a Debate</h4>
-      <p class="text-muted small mb-4">Enter a topic and pick your stance. The AI will argue the other side.</p>
+          <h4 class="mb-1 fw-bold">Start a Debate</h4>
+          <p class="text-muted small mb-4">Enter a topic for your debate.</p>
 
-      <!-- INPUT: topic → debate.topic sent to LLM as debate subject -->
-      <div class="mb-3">
-        <label class="form-label fw-semibold">Topic</label>
-        <input
-          type="text"
-          class="form-control"
-          placeholder="e.g. Social media does more harm than good"
-          [(ngModel)]="topic"
-        />
-      </div>
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Topic</label>
+            <input
+              type="text"
+              class="form-control"
+              placeholder="e.g. Social media does more harm than good"
+              [(ngModel)]="topic"
+            />
+          </div>
+            <div class="mb-3">
+                <label class="form-label fw-semibold">Turns</label>
+                <input
+                    type="number"
+                    value="1"
+                    class="form-control"
+                    [(ngModel)]="rounds" />
+            </div>
 
-      <!-- INPUT: stance → debate.stance (for / against) sent to LLM to set user's position -->
-      <div class="mb-4">
-        <label class="form-label fw-semibold">Your Stance</label>
-        <div class="d-flex gap-2">
+<!--          <div class="mb-4">-->
+<!--            <label class="form-label fw-semibold">Your Stance</label>-->
+<!--            <div class="d-flex gap-2">-->
+<!--              <button-->
+<!--                class="btn flex-grow-1"-->
+<!--                [class.btn-primary]="stance === 'for'"-->
+<!--                [class.btn-outline-primary]="stance !== 'for'"-->
+<!--                (click)="stance = 'for'"-->
+<!--              >For</button>-->
+<!--              <button-->
+<!--                class="btn flex-grow-1"-->
+<!--                [class.btn-danger]="stance === 'against'"-->
+<!--                [class.btn-outline-danger]="stance !== 'against'"-->
+<!--                (click)="stance = 'against'"-->
+<!--              >Against</button>-->
+<!--            </div>-->
+<!--          </div>-->
+
           <button
-            class="btn flex-grow-1"
-            [class.btn-primary]="stance === 'for'"
-            [class.btn-outline-primary]="stance !== 'for'"
-            (click)="stance = 'for'"
-          >For</button>
-          <button
-            class="btn flex-grow-1"
-            [class.btn-danger]="stance === 'against'"
-            [class.btn-outline-danger]="stance !== 'against'"
-            (click)="stance = 'against'"
-          >Against</button>
+            class="btn btn-primary w-100"
+            [disabled]="!topic.trim()"
+            (click)="start()"
+          >Start Debate</button>
+
         </div>
       </div>
 
-      <button
-        class="btn btn-primary w-100"
-        [disabled]="!topic.trim()"
-        (click)="start()"
-      >Start Debate</button>
-
     </div>
-  </div>
-
-</div>
+} @else {
+    <app-debate-arena [topic]="topic" [max_rounds]="rounds"></app-debate-arena>
+}
